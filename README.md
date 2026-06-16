@@ -1,6 +1,6 @@
-# Payment Virtual Threads PoC - Java 25 + Spring Boot + DDD + Hexagonal
+# Payment Virtual Threads PoC - Java + Spring Boot + DDD + Hexagonal
 
-PoC de procesamiento de pagos con **Java 25**, **Spring Boot**, **Maven**, **arquitectura hexagonal**, **DDD** y **virtual threads**.
+PoC de procesamiento de pagos con **Java**, **Spring Boot**, **Maven**, **arquitectura hexagonal**, **DDD** y **virtual threads**.
 
 La funcionalidad principal expone un microservicio REST que procesa una orden de pago. El caso de uso orquesta 4 endpoints internos creados dentro del mismo microservicio:
 
@@ -91,7 +91,7 @@ Componentes:
 
 Requisitos:
 
-- JDK 25.
+- JDK 21.
 - Maven 3.9.x o superior.
 - Docker / Docker Compose.
 
@@ -135,14 +135,6 @@ curl -X POST http://localhost:8080/payments/v1/payment-orders \
   -d @infraestructure/datasets/requests/payment-declined-limit.json
 ```
 
-## Importar en IntelliJ IDEA
+## Notas
 
-1. Abrir IntelliJ IDEA.
-2. `File > Open`.
-3. Seleccionar la carpeta `payment-virtual-threads-poc`.
-4. Elegir JDK 25 en `Project SDK`.
-5. Ejecutar `PaymentVirtualThreadsApplication`.
-
-## Nota sobre versiones
-
-La PoC usa Spring Boot 3.5.0 y Maven Compiler Plugin 3.15.0 con `release=25`. Spring Boot documenta que los virtual threads se habilitan con Java 21+ usando `spring.threads.virtual.enabled=true`; para mejor experiencia recomienda Java 24+.
+Con Spring Boot los virtual threads se habilitan con Java 21+ usando `spring.threads.virtual.enabled=true`
