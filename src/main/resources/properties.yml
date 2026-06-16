@@ -1,0 +1,6 @@
+# Archivo solicitado como properties.yml.
+# Spring Boot usa application.yml automáticamente. Copia estos valores a application.yml si deseas separar perfiles.
+spring:
+  threads:
+    virtual:
+      enabled: true

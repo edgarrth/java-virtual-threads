@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: payment-virtual-threads-poc
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/payments
+    username: payments_app
+    password: payments_app
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+  kafka:
+    bootstrap-servers: localhost:19092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+server:
+  port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+app:
+  internal-base-url: http://localhost:${server.port}
+  orchestration:
+    timeout-ms: 3000
