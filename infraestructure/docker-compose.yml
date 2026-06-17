@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: poc-payments-postgres
+    environment:
+      POSTGRES_DB: payments
+      POSTGRES_USER: payments_app
+      POSTGRES_PASSWORD: payments_app
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./datasets/postgres/001_seed_payments.sql:/docker-entrypoint-initdb.d/001_seed_payments.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U payments_app -d payments"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  redpanda:
+    image: redpandadata/redpanda:v24.3.5
+    container_name: poc-payments-redpanda
+    command: ["redpanda", "start", "--overprovisioned", "--smp", "1", "--memory", "512M", "--reserve-memory", "0M", "--node-id", "0", "--check=false", "--kafka-addr", "PLAINTEXT://0.0.0.0:9092,OUTSIDE://0.0.0.0:19092", "--advertise-kafka-addr", "PLAINTEXT://redpanda:9092,OUTSIDE://localhost:19092"]
+    ports:
+      - "19092:19092"
+      - "9644:9644"
+  console:
+    image: redpandadata/console:v2.8.3
+    container_name: poc-payments-redpanda-console
+    environment:
+      KAFKA_BROKERS: redpanda:9092
+    ports:
+      - "8081:8080"
+    depends_on: [redpanda]
