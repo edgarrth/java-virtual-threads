@@ -1,6 +1,8 @@
 spring:
   application:
     name: payment-virtual-threads-poc
+  main:
+    keep-alive: true
   threads:
     virtual:
       enabled: true
