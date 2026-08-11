@@ -22,17 +22,6 @@ spring:
 
 Además, el caso de uso usa `Executors.newVirtualThreadPerTaskExecutor()` para paralelizar las 3 llamadas internas.
 
-## Migración a Java 25
-
-- Java objetivo: **25** (`java.version` y `maven.compiler.release`).
-- Spring Boot actualizado de **3.5.0** a **3.5.16**, manteniendo la misma línea 3.5.x.
-- Maven Compiler Plugin: **3.15.0** con `release=25`.
-- Eliminada la dependencia Lombok porque no era utilizada por el proyecto.
-- Virtual threads habilitados para el servidor Spring Boot y para la orquestación interna.
-- `spring.main.keep-alive=true` para mantener vivo el proceso cuando se usan virtual threads.
-- Corregido el escenario `payment-declined-limit.json`: 1600 PEN ahora llega realmente a la validación de límite sin ser rechazado antes por la simulación antifraude.
-- Ampliadas las pruebas unitarias para dominio, política de decisión y ejecución paralela sobre virtual threads.
-
 ## Arquitectura
 
 ```mermaid
@@ -181,12 +170,3 @@ Respuesta esperada:
 }
 ```
 
-## Pruebas incluidas
-
-- `MoneyTest`: validación del value object monetario.
-- `PaymentDecisionPolicyTest`: reglas de autorización y rechazo por límite.
-- `PaymentProcessingServiceTest`:
-  - comprueba que las 3 validaciones se inician concurrentemente;
-  - comprueba que se ejecutan sobre **virtual threads** mediante `Thread.currentThread().isVirtual()`;
-  - valida el flujo aprobado;
-  - valida el rechazo por límite sin llamar al adquirente.
